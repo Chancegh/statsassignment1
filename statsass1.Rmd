@@ -1,0 +1,214 @@
+---
+title: "statsass1"
+author: "Chance Hughes"
+date: "9/10/2021"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    pdf_document:
+      toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(ggplot2)
+library(htmltools)
+library(MATH4753FALLHUGH)
+```
+
+# 14/15 questions completed  
+# Q11 started but not finished
+
+```{r}
+getwd();
+```
+
+# Task 1
+Final grade calculation  
+Assignments - 15%, labs - 10%, projects - 10%, in class quizes - 10%,  
+chapter quizzes - 5%, mid-term exams - 20%, final exam - 30%  
+Grades: A-(90s), B-(80s), C-(60s-70s), D-(50s), F-(<50), NO CURVES!
+
+# Task 2
+a)
+```{r}
+ddt <- read.csv("DDT.csv")
+head(ddt,6)
+
+m=with(ddt, as.numeric(factor(MILE)))
+length(unique(m))
+
+coplot(LENGTH~WEIGHT | RIVER*SPECIES, data=ddt, col = m)
+```
+
+b) Catfish have a relatively consistent weight vs length ratio no matter what river they are in, and they are caught around the same mile  
+
+c) Line A - loads a variable m with colors unique to the mile  
+
+d) Line B - returns the length of unique(m) which is the number of colors of the data  
+
+e) The plots are empty because there is not data points to put in them  
+
+f)
+```{r}
+cat <- ddt[ddt$RIVER=="FCM" & ddt$SPECIES=="CCATFISH",]
+head(cat)
+mean(cat$DDT, trim=0, na.rm=FALSE)
+```
+45
+
+# Task 3
+a) quantitative  
+b) quantitative  
+c) qualitative  
+d) quantitative  
+e) qualitative  
+f) quantitative  
+g) qualitative
+
+# Task 4
+a) Simple random samples, Stratified random sampling, Cluster sampling, and Systematic sampling  
+b) Simple random sample - randomly generated selection from a population  
+Stratified random sampling - divide a population into similar category and take a sample from each group  
+Cluster sampling - divide into groups of different characteristics and select whole clusters to sample  
+Systematic sampling - sample every nth item
+
+# Task 5
+```{r}
+mtbe <- read.csv("MTBE.csv")
+head(mtbe)
+dim(mtbe)
+mtbeo <- na.omit(mtbe)
+ind = sample(1:223,5,replace=FALSE)
+mtbeo[ind,]
+depth = mtbeo[mtbeo$Aquifier=="Unconsoli",]$Depth
+sd(depth)
+```
+
+# Task 6
+```{r}
+eq <- read.csv("eq.csv")
+plot(eq$MAG)
+median(eq$MAGNITUDE)
+```
+
+# Task 7
+a) Stratified random sampling  
+b) All the fish in the Tennessee river and its tributaries  
+c) River and Species  
+
+# Task 8
+a) Histogram
+b) Types of robotic limbs
+c) Legs only robot
+d)
+```{r}
+freq<-c(15,8,63,20)
+RL<-c("None","Both","LegsO","WheelsO")
+rt<-rep(RL,freq)
+rf <- table(rt)/length(rt)
+print(rf)
+```
+![](pareto1.PNG){ width=70% }
+
+# Task 9
+```{r}
+freq <- c(6,8,22,3,11)
+RL <- c("Denial of service", "Information disclosure", "Remote code execution", "Spoofing", "Privilege elevation")
+rt <- rep(RL,freq)
+x <- rt
+```
+![](pareto2.PNG){ width=70% }
+  
+Microsoft should focus their efforts toward fixing remote code execution
+
+# Task 10
+```{r}
+swd=read.csv("SWDEFECTS.csv", header=TRUE)
+head(swd)
+library(plotrix)
+tab=table(swd$defect)
+rtab=tab/sum(tab)
+round(rtab,2)
+pie3D(rtab,labels=list("OK","Defective"),main="pie plot of SWD")
+
+```
+  
+The likelihood of defective software being present is around 10%
+
+# Task 11
+```{r}
+volt <- read.csv("VOLTAGE.csv")
+tab <- table(volt$ï..VOLTAGE)
+hist(tab)
+```
+
+
+# Task 12
+```{r}
+pipe <- read.csv("ROUGHPIPE.csv")
+y <- mean(pipe$ï..ROUGH)
+s <- sd(pipe$ï..ROUGH)
+s1 = y-2*s
+s2 = y+2*s
+s1
+s2
+```
+  
+Around 95% of all coated pipe roughness measurements are contained within (0.8331, 2.9288)
+
+# Task 13
+```{r}
+gobi <- read.csv("GOBIANTS.csv")
+head(gobi)
+
+mean(gobi$AntSpecies)
+median(gobi$AntSpecies)
+mode(gobi$AntSpecies)
+```
+  
+  With the mean being 12.8 we can see that the average is much higher than the median, we can interpret that there are outliers and the upper bound of the data.  
+    
+  b) I would use the median as the number of central tendency because of the outliers that distort the mean.
+  c)
+```{r}
+with(gobi, gobi$Region == "Dry Steppe")
+mean(gobi$PlantCov)
+median(gobi$PlantCov)
+mode(gobi$PlantCov)
+```
+  
+```{r}
+gob <- with(gobi, gobi$Region == "Gobi Desert")
+```
+  
+e) The center of plant distributions at the two regions are different from each other
+
+# Task 14
+a)
+```{r}
+velo <- read.csv("GALAXY2.csv")
+summary(velo)
+hist(velo$ï..VELOCITY)
+```
+From the histogram we can see that the distribution is closely symmetrical about the median  
+
+b) Yes, the evidence is that the velocity group together and there are very few velocities that are not with another  
+
+c)
+```{r}
+mean(velo$ï..VELOCITY)
+sd(velo$ï..VELOCITY)
+```
+  
+d) This galaxy likely belong to cluster A1775A, the slower cluster
+
+# Task 15
+```{r}
+ddt %>% filter(LENGTH < 55, LENGTH > 0, DDT > 0) %>% ggplot(aes(x=RIVER, y=LENGTH, fill=SPECIES)) + geom_boxplot() + ggtitle("Chance Hughes")
+```
+
+
